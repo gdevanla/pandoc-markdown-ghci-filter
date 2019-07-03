@@ -1,0 +1,62 @@
+name:                pandoc-markdown-ghci-filter
+version:             0.1.0.0
+github:              "gdevanla/pandoc-markdown-ghci-filter"
+license:             MIT
+author:              "Guru Devanla"
+maintainer:          "gdrvnl@gmail.com"
+copyright:           "2019 Guru Devanla"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/githubuser/pandoc-markdown-ghci-filter#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- aeson
+- text
+- pandoc-types
+- pandoc
+- ghcid
+
+default-extensions:
+- DeriveGeneric
+- OverloadedStrings
+
+library:
+  source-dirs: src
+
+executables:
+  pandoc-markdown-ghci-filter-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -Wall
+    - -Wcompat
+    - -Wincomplete-record-updates
+    - -Wincomplete-uni-patterns
+    - -Wredundant-constraints
+    dependencies:
+    - pandoc-markdown-ghci-filter
+
+tests:
+  pandoc-markdown-ghci-filter-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - pandoc-markdown-ghci-filter

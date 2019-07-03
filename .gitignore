@@ -1,0 +1,4 @@
+.stack-work/
+pandoc-markdown-ghci-filter.cabal
+stack.yaml.lock
+*~
