@@ -12,6 +12,11 @@ testFunc x = x + 1
 
 >> testFunc 13
 
+anotherFunc:: Integer -> Integer
+anotherFunc x = x * 2
+
+>> (testFunc 10) + (anotherFunc 20)
+
 ```
 
 ## Example 2

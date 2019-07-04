@@ -3,7 +3,10 @@ module Main where
 
 --import GHC.Generics
 import Text.Pandoc
+import Text.Pandoc.JSON
 import Language.Haskell.Ghcid
+import Control.Applicative
+import Control.Monad.Fix
 
 --Import Data.Aeson as A
 import qualified Data.Text as T
@@ -13,15 +16,27 @@ testBlocks = [
   CodeBlock ("",["haskell"],[]) ">> putStrLn \"This string should show up in the output\"\n",
   CodeBlock ("",["haskell"],[]) "testFunc:: Integer -> Integer\ntestFunc x = x + 1\n\n>> testFunc 13\n",
   CodeBlock ("",["haskell"],[]) "testFunc:: Integer -> Integer\ntestFunc x = x + 1\n\n>> testFunc 13\n\ntestFunc:: Integer -> Integer\ntestFunc x = x + 1\n",
-  CodeBlock ("",["haskell"],[]) "testFunc1:: Integer -> Integer\ntestFunc1 x = x + 1\n\n>> testFunc1 13\n\ntestFunc2:: Integer -> Integer\ntestFunc2 x = x + 1\n\n>> testFunc2 5\n"]
+  CodeBlock ("",["haskell"],[]) "testFunc1:: Integer -> Integer\ntestFunc1 x = x + 1\n\n>> testFunc1 13\n\ntestFunc2:: Integer -> Integer\ntestFunc2 x = x + 1\n\n>> testFunc2 5\n"
+  ]
+
+
+--replaceAll pat str = if (T.replace pat str) == str then str else replaceAll pat (T.replace pat str)
+
+replaceAll' f (pat, str) = if ((T.replace pat "" str) == str) then str
+  else f (pat, T.replace pat "" str)
+
+ghcid_pattern =  "*Main Lib INTERNAL_GHCID|"
 
 runCodeBlock:: Block -> IO Block
 runCodeBlock (CodeBlock attr str) = do
   (g, _) <- startGhci "stack ghci" (Just ".") (\stream s -> return ())
-  let cmds = filter (\s -> s /= "") $ T.splitOn "\n" $ T.pack str
+  let cmds = filter (\s -> s /= "") $ T.splitOn "\n\n" $ T.pack str
   results <- mapM (runCmd g) cmds
+  let results_ = getZipList $ (\s t -> T.concat [s, "\n\n", t]) <$> ZipList cmds <*> ZipList results
+  --putStrLn . show . getZipList $ results_
+  let results__ = map (fix replaceAll') [(ghcid_pattern, x)|x<-results_]
   stopGhci g
-  return (CodeBlock attr str)
+  return (CodeBlock attr ((T.unpack . T.concat) results__))
 runCodeBlock b = return b
 
 --runCmd :: T.Text -> IO T.Text
@@ -29,16 +44,22 @@ runCmd g cmd = do
   -- (g, _) <- startGhci "stack ghci" (Just ".") (\stream s -> return ())
   let executeStatement = exec g
       cmd_ = T.concat [":{\n", T.replace ">>" "" cmd, "\n:}\n"]
-  putStrLn $ T.unpack cmd_
+  --putStrLn $ T.unpack cmd_
   result <- executeStatement . T.unpack $ cmd_
-  putStrLn $ unlines $ result
+  --putStrLn $ unlines $ result
   return $ T.pack . unlines $ result
 
+-- main :: IO ()
+-- main = do
+--   result <- mapM runCodeBlock testBlocks
+--   putStrLn $ show $ result
+--   return ()
+
 main :: IO ()
-main = do
-  result <- mapM runCodeBlock testBlocks
-  putStrLn $ show $ result
-  return ()
+main = toJSONFilter runCodeBlock
+--   where behead (Header n _ xs) | n >= 2 = return $ Para [Emph xs]
+--         behead z@(CodeBlock attr str) = updateCodeBlock z
+
 
 
 --     (g, _) <- startGhci "stack ghci" (Just ".") (\stream s -> return ())
@@ -51,10 +72,10 @@ main = do
 --     stopGhci g
 
 
-updateCodeBlock:: Block-> IO Block
-updateCodeBlock code = do
-  putStrLn $ show code
-  return code
+-- updateCodeBlock:: Block-> IO Block
+-- updateCodeBlock code = do
+--   putStrLn $ show code
+--   return code
 
 
 -- cmd = unlines [
@@ -105,8 +126,3 @@ updateCodeBlock code = do
 
 --   toEncoding (Person name1 age1) =
 --     pairs ("name" .= name1 <> "age" .= age1)
-
--- main :: IO ()
--- main = toJSONFilter behead
---   where behead (Header n _ xs) | n >= 2 = return $ Para [Emph xs]
---         behead z@(CodeBlock attr str) = updateCodeBlock z
