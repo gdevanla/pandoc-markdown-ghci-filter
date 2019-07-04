@@ -32,11 +32,12 @@ runCodeBlock (CodeBlock attr str) = do
   (g, _) <- startGhci "stack ghci" (Just ".") (\stream s -> return ())
   let cmds = filter (\s -> s /= "") $ T.splitOn "\n\n" $ T.pack str
   results <- mapM (runCmd g) cmds
-  let results_ = getZipList $ (\s t -> T.concat [s, "\n\n", t]) <$> ZipList cmds <*> ZipList results
+  let results' = getZipList $ (\s t -> T.concat [s, "\n\n", t, if t /= "" then "\n" else ""]) <$> ZipList cmds <*> ZipList results
   --putStrLn . show . getZipList $ results_
-  let results__ = map (fix replaceAll') [(ghcid_pattern, x)|x<-results_]
+  let results'' = map ((fix replaceAll')) [(ghcid_pattern, x)|x<-results']
+  let results''' = map (\s -> T.concat [s, ""]) results''
   stopGhci g
-  return (CodeBlock attr ((T.unpack . T.concat) results__))
+  return (CodeBlock attr ((T.unpack . T.concat) results'''))
 runCodeBlock b = return b
 
 --runCmd :: T.Text -> IO T.Text
