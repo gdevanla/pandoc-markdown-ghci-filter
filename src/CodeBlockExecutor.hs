@@ -58,11 +58,11 @@ runCmd g cmd = do
       cmd_ = T.concat [":{\n", T.replace ">>" "" cmd, "\n:}\n"]
   result <- executeStatement . T.unpack $ cmd_
   -- we send this PROBE here since GHCi has its own mind on how it prefixes output based on its native needs. By sending the probe we can guess what is the latest prompt and then discard it while processing thye output.
-  probe <- exec g ":{\nshow (\"PROBE_PROMPT\"::String)\n:}\n"
+  probe <- exec g ":{\nshow (\"PANDOC_FILTER_PROBE_PROMPT_INTERNAL\"::String)\n:}\n"
   let current_prompt = preparePrompt probe
         where
           preparePrompt probe' =
-            let prompt = T.replace " \"\\\"PROBE_PROMPT\\\"\"\n" "" (T.pack . unlines $ probe')
+            let prompt = T.replace " \"\\\"PANDOC_FILTER_PROBE_PROMPT_INTERNAL\\\"\"\n" "" (T.pack . unlines $ probe')
             in
               T.concat [T.takeWhile (/='|') prompt, "|"]
   --putStrLn $ show . unlines $ probe
