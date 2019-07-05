@@ -47,19 +47,24 @@ pandoc -s -t json README.md | pandoc_filter | pandoc -f json -t markdown
 
 # Installation
 
+## Requirements
+
+    - [Stack](https://docs.haskellstack.org/en/stable/README/)
+
+Currently, this filter can be installed from the source (it will be available on Hackage once the tool is stable).
+
 ``` shell
 
-cd your_folder
 git clone https://github.com/gdevanla/pandoc-markdown-ghci-filter.git
-cd your_folder/pandoc-markdown-ghci-filter
+cd pandoc-markdown-ghci-filter
 
-stack build pandoc-markdown-ghci-filter
+stack build
 
-# create a link to that executable depending on your OS
+stack setup # Note, this command copies this tool to ~/.local/bin.
 
 # test it on a test_markdown file
 
-pandoc -s -t json README.md | pandoc-markdown-ghci-filter | pandoc -f json -t markdown
+pandoc -s -t json README.md | pandoc-markdown-ghci-filter-exe | pandoc -f json -t markdown
 
 ```
 
