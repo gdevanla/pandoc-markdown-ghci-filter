@@ -1,7 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module CodeBlockExecutor
-    ( runCodeBlock
+    ( runCodeBlock,
+      processResults
     ) where
 
 --import GHC.Generics
@@ -34,11 +35,11 @@ intercalateCmdAndResults cmd result =
   T.concat [cmd, updateSuffixForInteractiveCmd cmd, result, trailResult result] where
   trailResult r = if r /= "" then "\n" else ""
 
-processResults :: [T.Text] -> [T.Text] -> [T.Text]
+processResults :: [T.Text] -> [T.Text] -> String
 processResults cmds results =
   let cmd_result = getZipList $ intercalateCmdAndResults <$> ZipList cmds <*> ZipList results
   in
-    map (removeAll ghcid_pattern) cmd_result
+    (T.unpack . T.concat) $ map (removeAll ghcid_pattern) cmd_result
 
 runCodeBlock:: Block -> IO Block
 runCodeBlock (CodeBlock attr str) = bracket startGhciProcess' stopGhci runCommands
@@ -50,7 +51,7 @@ runCodeBlock (CodeBlock attr str) = bracket startGhciProcess' stopGhci runComman
       let cmds = filter (\s -> s /= "") $ T.splitOn "\n\n" $ T.pack str
       results <- mapM (runCmd g) cmds
       let results''' = processResults cmds results
-      return (CodeBlock attr ((T.unpack . T.concat) results'''))
+      return (CodeBlock attr results''')
 runCodeBlock b = return b
 
 runCmd :: Ghci -> T.Text -> IO T.Text

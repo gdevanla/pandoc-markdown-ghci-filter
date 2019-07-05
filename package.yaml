@@ -60,4 +60,7 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - pandoc-markdown-ghci-filter
-    - HUnit
+    - tasty-hunit
+    - QuickCheck
+    - tasty
+    - tasty-quickcheck
