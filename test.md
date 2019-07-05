@@ -1,6 +1,8 @@
 ## my header
 
 ``` haskell
+import Data.Text
+
 >> putStrLn "This string should show up in the output"
 
 ```

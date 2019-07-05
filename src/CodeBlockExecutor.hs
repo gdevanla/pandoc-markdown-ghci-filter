@@ -12,15 +12,13 @@ import Language.Haskell.Ghcid
 import Control.Applicative
 import Control.Exception
 import Data.String
+import Data.List as L
 
 import qualified Data.Text as T
 
 removeAll:: T.Text -> T.Text -> T.Text
 removeAll pat str = if (T.replace pat "" str) == str then str
   else removeAll pat (T.replace pat "" str)
-
-ghcid_pattern :: T.Text
-ghcid_pattern =  "*Main CodeBlockExecutor INTERNAL_GHCID| "
 
 isInteractive :: T.Text -> Bool
 isInteractive cmd = T.isPrefixOf ">>" cmd
@@ -39,7 +37,7 @@ processResults :: [T.Text] -> [T.Text] -> String
 processResults cmds results =
   let cmd_result = getZipList $ intercalateCmdAndResults <$> ZipList cmds <*> ZipList results
   in
-    (T.unpack . T.concat) $ map (removeAll ghcid_pattern) cmd_result
+    (T.unpack . T.concat) $ cmd_result
 
 runCodeBlock:: Block -> IO Block
 runCodeBlock (CodeBlock attr str) = bracket startGhciProcess' stopGhci runCommands
@@ -59,4 +57,16 @@ runCmd g cmd = do
   let executeStatement = exec g
       cmd_ = T.concat [":{\n", T.replace ">>" "" cmd, "\n:}\n"]
   result <- executeStatement . T.unpack $ cmd_
-  return $ T.pack . unlines $ result
+  -- we send this PROBE here since GHCi has its own mind on how it prefixes output based on its native needs. By sending the probe we can guess what is the latest prompt and then discard it while processing thye output.
+  probe <- exec g ":{\nshow (\"PROBE_PROMPT\"::String)\n:}\n"
+  let current_prompt = preparePrompt probe
+        where
+          preparePrompt probe' =
+            let prompt = T.replace " \"\\\"PROBE_PROMPT\\\"\"\n" "" (T.pack . unlines $ probe')
+            in
+              T.concat [T.takeWhile (/='|') prompt, "|"]
+  --putStrLn $ show . unlines $ probe
+  --putStrLn $ show current_prompt
+      result' = T.stripStart $ removeAll current_prompt (T.pack . unlines $ result)
+  --putStrLn $ show result'
+  return $ result'
