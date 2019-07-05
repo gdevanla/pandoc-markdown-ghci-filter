@@ -9,25 +9,17 @@ import Text.Pandoc
 
 import Language.Haskell.Ghcid
 import Control.Applicative
+import Control.Exception
 import Data.String
 
 import qualified Data.Text as T
-
-
--- testBlocks :: [Block]
--- testBlocks = [
---   CodeBlock ("",["haskell"],[]) ">> putStrLn \"This string should show up in the output\"\n",
---   CodeBlock ("",["haskell"],[]) "testFunc:: Integer -> Integer\ntestFunc x = x + 1\n\n>> testFunc 13\n",
---   CodeBlock ("",["haskell"],[]) "testFunc:: Integer -> Integer\ntestFunc x = x + 1\n\n>> testFunc 13\n\ntestFunc:: Integer -> Integer\ntestFunc x = x + 1\n",
---   CodeBlock ("",["haskell"],[]) "testFunc1:: Integer -> Integer\ntestFunc1 x = x + 1\n\n>> testFunc1 13\n\ntestFunc2:: Integer -> Integer\ntestFunc2 x = x + 1\n\n>> testFunc2 5\n"
---   ]
 
 removeAll:: T.Text -> T.Text -> T.Text
 removeAll pat str = if (T.replace pat "" str) == str then str
   else removeAll pat (T.replace pat "" str)
 
 ghcid_pattern :: T.Text
-ghcid_pattern =  "*Main Lib INTERNAL_GHCID| "
+ghcid_pattern =  "*Main CodeBlockExecutor INTERNAL_GHCID| "
 
 isInteractive :: T.Text -> Bool
 isInteractive cmd = T.isPrefixOf ">>" cmd
@@ -42,16 +34,23 @@ intercalateCmdAndResults cmd result =
   T.concat [cmd, updateSuffixForInteractiveCmd cmd, result, trailResult result] where
   trailResult r = if r /= "" then "\n" else ""
 
+processResults :: [T.Text] -> [T.Text] -> [T.Text]
+processResults cmds results =
+  let cmd_result = getZipList $ intercalateCmdAndResults <$> ZipList cmds <*> ZipList results
+  in
+    map (removeAll ghcid_pattern) cmd_result
+
 runCodeBlock:: Block -> IO Block
-runCodeBlock (CodeBlock attr str) = do
-  (g, _) <- startGhci "stack ghci" (Just ".") (\_ _ -> return ())
-  let cmds = filter (\s -> s /= "") $ T.splitOn "\n\n" $ T.pack str
-  results <- mapM (runCmd g) cmds
-  let results' = getZipList $ intercalateCmdAndResults <$> ZipList cmds <*> ZipList results
-  let results'' = map (removeAll ghcid_pattern) results'
-  let results''' = map (\s -> T.concat [s, ""]) results''
-  stopGhci g
-  return (CodeBlock attr ((T.unpack . T.concat) results'''))
+runCodeBlock (CodeBlock attr str) = bracket startGhciProcess' stopGhci runCommands
+  where
+    startGhciProcess' = do
+      (ghci_handle, _) <- startGhci "stack ghci" (Just ".") (\_ _ -> return ())
+      return ghci_handle
+    runCommands g = do
+      let cmds = filter (\s -> s /= "") $ T.splitOn "\n\n" $ T.pack str
+      results <- mapM (runCmd g) cmds
+      let results''' = processResults cmds results
+      return (CodeBlock attr ((T.unpack . T.concat) results'''))
 runCodeBlock b = return b
 
 runCmd :: Ghci -> T.Text -> IO T.Text
