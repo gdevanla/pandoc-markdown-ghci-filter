@@ -20,10 +20,10 @@ testBlocks = [
   ]
 
 
---replaceAll pat str = if (T.replace pat str) == str then str else replaceAll pat (T.replace pat str)
+replaceAll pat str = if (T.replace pat str) == str then str else replaceAll pat (T.replace pat str)
 
-replaceAll' f (pat, str) = if ((T.replace pat "" str) == str) then str
-  else f (pat, T.replace pat "" str)
+-- replaceAll' f (pat, str) = if ((T.replace pat "" str) == str) then str
+--   else f (pat, T.replace pat "" str)
 
 ghcid_pattern =  "*Main Lib INTERNAL_GHCID| "
 
