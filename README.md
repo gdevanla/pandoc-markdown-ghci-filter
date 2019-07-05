@@ -45,7 +45,7 @@ pandoc -s -t json README.md | pandoc_filter | pandoc -f json -t markdown
 
 ```
 
-# Installtion
+# Installation
 
 ``` shell
 
@@ -53,15 +53,30 @@ cd your_folder
 git clone https://github.com/gdevanla/pandoc-markdown-ghci-filter.git
 cd your_folder/pandoc-markdown-ghci-filter
 
-stack build
-
-# find build folder using the following command
-stack path --dist-dir
+stack build pandoc-markdown-ghci-filter
 
 # create a link to that executable depending on your OS
 
 # test it on a test_markdown file
 
-pandoc -s -t json README.md | pandoc_filter | pandoc -f json -t markdown
+pandoc -s -t json README.md | pandoc-markdown-ghci-filter | pandoc -f json -t markdown
 
 ```
+
+# Usage Notes/Caveats
+
+1. All interactive statements (prefixed with `>>`) need to be preceded by `\n` to let the filter respect original new line spacing. If this is not followed, `\n` may be truncated.
+2. The program internally wraps all commands inside the GHCi multi-line contruct `:{..:}`. Therefore, the code segments should not have multiline constructs as part of code blocks.
+3. If you want the filter to ignore a certain `code` block, you can turn-off the filter by setting the `code` block attribute as follows
+
+``` {.haskell code_filter=Off}
+
+-- do not run this code through GHCi
+
+>> putStrLn "This line will not be expanded by the filter"
+```
+
+# Limitations/Open Issues
+
+1. Attaching different formattting properties to `output`.
+2. As explained in `Usage Notes`, all `interactive` statements should be preceded by an empty line, for the filter to maintain the `\n` characters as given by the input.
