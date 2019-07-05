@@ -13,8 +13,6 @@ import Data.String
 
 import qualified Data.Text as T
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
 
 -- testBlocks :: [Block]
 -- testBlocks = [
@@ -61,5 +59,4 @@ runCmd g cmd = do
   let executeStatement = exec g
       cmd_ = T.concat [":{\n", T.replace ">>" "" cmd, "\n:}\n"]
   result <- executeStatement . T.unpack $ cmd_
-
   return $ T.pack . unlines $ result
