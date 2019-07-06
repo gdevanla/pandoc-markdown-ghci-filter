@@ -221,10 +221,9 @@ wrongFuncDefintion = x + 1
 ```
 
 *Fun Fact:* This document was generated using this same tool it
-describes. To input file that was transformed into this `README.md` can
-be found here.
-[README-pre-process.md](https://github.com/gdevanla/pandoc-markdown-ghci-filter/blob/master/README-pre-process.md).
-The command used was:
+describes. This
+[README-pre-process.md](https://github.com/gdevanla/pandoc-markdown-ghci-filter/blob/master/README-pre-process.md)
+was used to generate this document. Here is the command that was used:
 
 ``` {.shell}
 pandoc -s -t json README-pre-process.md | stack runhaskell app/Main.hs | pandoc -f json -t markdown > README.md
