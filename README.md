@@ -21,7 +21,7 @@ block:
 increment:: Integer -> Integer
 increment x = x + 1
 
--- interactive prompt to demostrate the working of definitions so far
+-- interactive prompt to demonstrate the working of definitions so far
 
 >> increment 41
 ```
@@ -37,7 +37,7 @@ It would be nice if this `code` block was automatically evaluated and
 increment:: Integer -> Integer
 increment x = x + 1
 
--- interactive prompt to demostrate the working of definitions so far
+-- interactive prompt to demonstrate the working of definitions so far
 
 >> increment 41
 42
@@ -92,8 +92,8 @@ Usage Notes/Caveats
     by `\n` to let the filter respect original new line spacing. If this
     is not followed, `\n` may be truncated.
 2.  The program internally wraps all commands inside the GHCi multi-line
-    contruct `:{..:}`. Therefore, the code segments should not have
-    multiline constructs as part of code blocks.
+    construct `:{..:}`. Therefore, the code segments should not have
+    multi-line constructs as part of code blocks.
 3.  If you want the filter to ignore a certain `code` block, you can
     turn-off the filter by setting the `code` block attribute as follows
 
@@ -221,4 +221,6 @@ wrongFuncDefintion = x + 1
 ```
 
 *Fun Fact:* This document was generated using this same tool it
-describes. To [README-pre-process.md](https://github.com/gdevanla/pandoc-markdown-ghci-filter/blob/master/README-pre-process.md) was used to generated this document.
+describes. To input file that was transformed into this `README.md` can
+be found here.
+[README-pre-process.md](https://github.com/gdevanla/pandoc-markdown-ghci-filter/blob/master/README-pre-process.md)

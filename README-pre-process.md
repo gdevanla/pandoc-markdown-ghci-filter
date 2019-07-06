@@ -13,7 +13,7 @@ Often a markdown(or any `pandoc` supported document) for any `Haskell` related d
 increment:: Integer -> Integer
 increment x = x + 1
 
--- interactive prompt to demostrate the working of definitions so far
+-- interactive prompt to demonstrate the working of definitions so far
 
 >> increment 41
 ```
@@ -27,7 +27,7 @@ It would be nice if this `code` block was automatically evaluated and `output` o
 increment:: Integer -> Integer
 increment x = x + 1
 
--- interactive prompt to demostrate the working of definitions so far
+-- interactive prompt to demonstrate the working of definitions so far
 
 >> increment 41
 ```
@@ -72,7 +72,7 @@ pandoc -s -t json README.md | pandoc-markdown-ghci-filter-exe | pandoc -f json -
 # Usage Notes/Caveats
 
 1. All interactive statements (prefixed with `>>`) need to be preceded by `\n` to let the filter respect original new line spacing. If this is not followed, `\n` may be truncated.
-2. The program internally wraps all commands inside the GHCi multi-line contruct `:{..:}`. Therefore, the code segments should not have multiline constructs as part of code blocks.
+2. The program internally wraps all commands inside the GHCi multi-line construct `:{..:}`. Therefore, the code segments should not have multi-line constructs as part of code blocks.
 3. If you want the filter to ignore a certain `code` block, you can turn-off the filter by setting the `code` block attribute as follows
 
 
@@ -172,4 +172,8 @@ wrongFuncDefintion = x + 1
 ```
 
 
-*Fun Fact:* This document was generated using this same tool it describes. To input file that was transformed into this `README.md` can be found here. [README-pre-process.md](https://github.com/gdevanla/pandoc-markdown-ghci-filter/blob/master/README-pre-process.md)
+*Fun Fact:* This document was generated using this same tool it describes. To input file that was transformed into this `README.md` can be found here. [README-pre-process.md](https://github.com/gdevanla/pandoc-markdown-ghci-filter/blob/master/README-pre-process.md). The command used was:
+
+``` shell
+pandoc -s -t json README-pre-process.md | stack runhaskell app/Main.hs | pandoc -f json -t markdown > README.md
+```
