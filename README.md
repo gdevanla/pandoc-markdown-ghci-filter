@@ -144,7 +144,7 @@ addOne x = x + 1
 >> addOne 13
 
 multBy2:: Integer -> Integer
-multBy = x * 2
+multBy2 x = x * 2
 
 >> (addOne 10) + (multBy2 20)
 ```
@@ -188,7 +188,7 @@ addOne x = x + 1
 14
 
 multBy2:: Integer -> Integer
-multBy = x * 2
+multBy1 x = x * 2
 
 <interactive>:40:1: error:
     The type signature for ‘multBy2’ lacks an accompanying binding

@@ -117,7 +117,7 @@ addOne x = x + 1
 >> addOne 13
 
 multBy2:: Integer -> Integer
-multBy = x * 2
+multBy2 x = x * 2
 
 >> (addOne 10) + (multBy2 20)
 ```
@@ -154,7 +154,7 @@ addOne x = x + 1
 >> addOne 13
 
 multBy2:: Integer -> Integer
-multBy = x * 2
+multBy1 x = x * 2
 
 >> (addOne 10) + (multBy2 20)
 ```
