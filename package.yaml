@@ -26,6 +26,8 @@ dependencies:
 - pandoc-types
 - pandoc
 - ghcid
+- containers
+
 
 default-extensions:
 - DeriveGeneric
