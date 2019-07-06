@@ -61,10 +61,9 @@ cd pandoc-markdown-ghci-filter
 
 stack build
 
-stack setup # Note, this command copies this tool to ~/.local/bin.
 ```
 
-### From Hackage
+### From Stackage/Hackage
 
 ``` shell
 stack build pandoc-markdown-ghci-filter # executable only available to local stack environment

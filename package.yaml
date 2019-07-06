@@ -11,8 +11,8 @@ extra-source-files:
 - ChangeLog.md
 
 # Metadata used when publishing your package
-synopsis:            Pandoc filter to auto-generate and embed output by evalauting `code` blocks in markdown.
-category:            program, text, documentation, filter,mit
+synopsis: Pandoc-filter to evaluate `code` section in markdown and auto-embed output.
+category: program, text, documentation, filter,mit
 
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
