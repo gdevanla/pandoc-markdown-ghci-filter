@@ -1,12 +1,19 @@
-# pandoc-markdown-ghci-filter
+pandoc-markdown-ghci-filter
+===========================
 
-A Pandoc filter that identifies code blocks(`Haskell`), executes the code in GHCI and embeds the results in the returned Markdown.
+A Pandoc filter that identifies code blocks(`Haskell`), executes the
+code in GHCI and embeds the results in the returned Markdown.
 
-# Quick Overview
+Quick Overview
+==============
 
-Often a markdown(or any `pandoc` supported document) for any `Haskell` related documentation or a technical blog post involves `code` blocks. The `code` block could include `definitions` and also a demonstration of output with an `interactive` prompt. For, example, take this `code` block:
+Often a markdown(or any `pandoc` supported document) for any `Haskell`
+related documentation or a technical blog post involves `code` blocks.
+The `code` block could include `definitions` and also a demonstration of
+output with an `interactive` prompt. For, example, take this `code`
+block:
 
-``` haskell
+``` {.haskell code-filter="Off"}
 -- README.md
 
 -- definition
@@ -18,9 +25,11 @@ increment x = x + 1
 >> increment 41
 ```
 
-It would be nice if this `code` block was automatically evaluated and `output` of `increment 41` is automatically recorded below `>> increment 41`, as follows:
+It would be nice if this `code` block was automatically evaluated and
+`output` of `increment 41` is automatically recorded below
+`>> increment 41`, as follows:
 
-``` haskell
+``` {.haskell}
 -- README.md
 
 -- definition
@@ -31,29 +40,34 @@ increment x = x + 1
 
 >> increment 41
 42
+
 ```
 
-Notice, that the `42` is automatically populated by this filter while transforming the original document.
+Notice, that the `42` is automatically populated by this filter while
+transforming the original document.
 
-To transform the document, we need to run the document through the `pandoc` filter, as follows:
+To transform the document, we need to run the document through the
+`pandoc` filter, as follows:
 
-``` shell
+``` {.shell}
 
 -- set up pandoc_filter to the executable of this program (see Installation)
 
 pandoc -s -t json README.md | pandoc_filter | pandoc -f json -t markdown
-
 ```
 
-# Installation
+Installation
+============
 
-## Requirements
+Requirements
+------------
 
     - [Stack](https://docs.haskellstack.org/en/stable/README/)
 
-Currently, this filter can be installed from the source (it will be available on Hackage once the tool is stable).
+Currently, this filter can be installed from the source (it will be
+available on Hackage once the tool is stable).
 
-``` shell
+``` {.shell}
 
 git clone https://github.com/gdevanla/pandoc-markdown-ghci-filter.git
 cd pandoc-markdown-ghci-filter
@@ -65,23 +79,36 @@ stack setup # Note, this command copies this tool to ~/.local/bin.
 # test it on a test_markdown file
 
 pandoc -s -t json README.md | pandoc-markdown-ghci-filter-exe | pandoc -f json -t markdown
-
 ```
 
-# Usage Notes/Caveats
+Usage Notes/Caveats
+===================
 
-1. All interactive statements (prefixed with `>>`) need to be preceded by `\n` to let the filter respect original new line spacing. If this is not followed, `\n` may be truncated.
-2. The program internally wraps all commands inside the GHCi multi-line contruct `:{..:}`. Therefore, the code segments should not have multiline constructs as part of code blocks.
-3. If you want the filter to ignore a certain `code` block, you can turn-off the filter by setting the `code` block attribute as follows
+1.  All interactive statements (prefixed with `>>`) need to be preceded
+    by `\n` to let the filter respect original new line spacing. If this
+    is not followed, `\n` may be truncated.
+2.  The program internally wraps all commands inside the GHCi multi-line
+    contruct `:{..:}`. Therefore, the code segments should not have
+    multiline constructs as part of code blocks.
+3.  If you want the filter to ignore a certain `code` block, you can
+    turn-off the filter by setting the `code` block attribute as follows
 
-``` {.haskell code_filter=Off}
+``` {.haskell code_filter="Off"}
 
 -- do not run this code through GHCi
 
 >> putStrLn "This line will not be expanded by the filter"
+This line will not be expanded by the filter
+
 ```
 
-# Limitations/Open Issues
+Note, the default value is "On"
 
-1. Attaching different formattting properties to `output`.
-2. As explained in `Usage Notes`, all `interactive` statements should be preceded by an empty line, for the filter to maintain the `\n` characters as given by the input.
+Limitations/Open Issues
+=======================
+
+1.  Attaching different formattting properties to `output`.
+2.  As explained in `Usage Notes`, all `interactive` statements should
+    be preceded by an empty line, for the filter to maintain the `\n`
+    characters as given by the input.
+
