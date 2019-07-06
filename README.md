@@ -1,8 +1,9 @@
 pandoc-markdown-ghci-filter
 ===========================
 
-A Pandoc filter that identifies code blocks(`Haskell`), executes the
-code in GHCI and embeds the results in the returned Markdown.
+A `Pandoc` filter that identifies code blocks(`Haskell`) in Pandoc
+supported formats, executes the code in GHCI and embeds the results in
+the returned output by updating the AST provided by `Pandoc`.
 
 Quick Overview
 ==============
@@ -55,6 +56,9 @@ To transform the document, we need to run the document through the
 
 pandoc -s -t json README.md | pandoc_filter | pandoc -f json -t markdown
 ```
+
+To read more about how `filter` work, visit the
+[this](https://pandoc.org/filters.html) page.
 
 Installation
 ============
@@ -113,3 +117,97 @@ Limitations/Open Issues
     be preceded by an empty line, for the filter to maintain the `\n`
     characters as given by the input.
 
+More examples
+=============
+
+Sample Markdown Before Transformation
+-------------------------------------
+
+Sample markdown as fed into filter through `pandoc`.
+
+Example 1
+---------
+
+``` {.haskell code-filter="Off"}
+import Data.Text
+
+>> putStrLn "This string should show up in the output"
+```
+
+Example 2
+---------
+
+``` {.haskell code-filter="Off"}
+addOne:: Integer -> Integer
+addOne x = x + 1
+
+>> addOne 13
+
+multBy2:: Integer -> Integer
+multBy = x * 2
+
+>> (addOne 10) + (multBy2 20)
+```
+
+Example 3
+---------
+
+Any errors that occur while executing statements in the `code` block are
+also rendered.
+
+``` {.haskell code-filter="Off"}
+
+wrongFuncDefinition:: Integer -> Integer
+wrongFuncDefintion = x + 1
+
+>> functionNotInScope 10
+```
+
+Markdown after transformation
+-----------------------------
+
+``` {.haskell code-filter="On"}
+import Data.Text
+
+>> putStrLn "This string should show up in the output"
+This string should show up in the output
+
+```
+
+Example 2
+---------
+
+``` {.haskell code-filter="On"}
+addOne:: Integer -> Integer
+addOne x = x + 1
+
+>> addOne 13
+14
+
+multBy2:: Integer -> Integer
+multBy2 x = x * 2
+
+>> (addOne 10) + (multBy2 20)
+51
+
+```
+
+``` {.haskell code-filter="On"}
+
+wrongFuncDefinition:: Integer -> Integer
+wrongFuncDefintion = x + 1
+
+<interactive>:16:1: error:
+    The type signature for ‘wrongFuncDefinition’
+      lacks an accompanying binding
+
+>> functionNotInScope 10
+<interactive>:29:2: error:
+    Variable not in scope: functionNotInScope :: Integer -> t
+
+```
+
+*Fun Fact:* This document was generated using this same tool it
+describes. To input file that was transformed into this `README.md` can
+be found here.
+[README-pre-process.md](https://github.com/gdevanla/pandoc-markdown-ghci-filter/blob/master/README-pre-process.md)

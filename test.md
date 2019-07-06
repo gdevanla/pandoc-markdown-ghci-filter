@@ -1,58 +1,47 @@
-## my header
+## Sample Markdown Before Transformation
 
-``` haskell
+Sample markdown as fed into filter through `pandoc`.
+
+## Example 1
+
+``` {.haskell code-filter=Off}
 import Data.Text
 
 >> putStrLn "This string should show up in the output"
 
 ```
-## Example 1
-
-``` haskell
-testFunc:: Integer -> Integer
-testFunc x = x + 1
-
->> testFunc 13
-
-anotherFunc:: Integer -> Integer
-anotherFunc x = x * 2
-
->> (testFunc 10) + (anotherFunc 20)
-
-```
-
 ## Example 2
 
-``` haskell
-testFunc:: Integer -> Integer
-testFunc x = x + 1
+``` {.haskell code-filter=Off}
+addOne:: Integer -> Integer
+addOne x = x + 1
 
->> testFunc 13
+>> addOne 13
 
-testFunc:: Integer -> Integer
-testFunc x = x + 1
+multBy2:: Integer -> Integer
+multBy = x * 2
+
+>> (addOne 10) + (multBy2 20)
 ```
 
-## Example 3
+## Markdown after transformation
 
-``` haskell
-testFunc1:: Integer -> Integer
-testFunc1 x = x + 1
+``` {.haskell code-filter=On}
+import Data.Text
 
->> testFunc1 13
+>> putStrLn "This string should show up in the output"
 
-testFunc2:: Integer -> Integer
-testFunc2 x = x + 1
-
->> testFunc2 5
 ```
+## Example 2
 
-## Example 4
+``` {.haskell code-filter=On}
+addOne:: Integer -> Integer
+addOne x = x + 1
 
-``` haskell
+>> addOne 13
 
-let x = ("string with a new line character\n\n\n")::String
+multBy2:: Integer -> Integer
+multBy = x * 2
 
->> x
-
+>> (addOne 10) + (multBy2 20)
 ```
