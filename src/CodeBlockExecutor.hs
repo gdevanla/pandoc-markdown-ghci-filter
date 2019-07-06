@@ -1,7 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module CodeBlockExecutor
-    ( runCodeBlock,
+    (
+      applyFilterToBlock,
+      runCodeBlock,
       processResults
     ) where
 
@@ -13,6 +15,8 @@ import Control.Applicative
 import Control.Exception
 import Data.String
 import Data.List as L
+import Data.Map.Strict as M
+import Data.Maybe
 
 import qualified Data.Text as T
 
@@ -39,6 +43,16 @@ processResults cmds results =
   in
     (T.unpack . T.concat) $ cmd_result
 
+applyFilterToBlock:: Block -> IO Block
+applyFilterToBlock c@(CodeBlock (_, classes, key_values) _) = let
+  attrs = M.fromList key_values
+  haskell_in_class = L.find (== "haskell") classes
+  code_filter_flag = maybe "On" id (M.lookup ("code-filter") attrs)
+  in
+    if code_filter_flag == "On" && isJust haskell_in_class then runCodeBlock c
+    else (return c)
+applyFilterToBlock b = return b
+
 runCodeBlock:: Block -> IO Block
 runCodeBlock (CodeBlock attr str) = bracket startGhciProcess' stopGhci runCommands
   where
@@ -46,7 +60,7 @@ runCodeBlock (CodeBlock attr str) = bracket startGhciProcess' stopGhci runComman
       (ghci_handle, _) <- startGhci "stack ghci" (Just ".") (\_ _ -> return ())
       return ghci_handle
     runCommands g = do
-      let cmds = filter (\s -> s /= "") $ T.splitOn "\n\n" $ T.pack str
+      let cmds = L.filter (\s -> s /= "") $ T.splitOn "\n\n" $ T.pack str
       results <- mapM (runCmd g) cmds
       let results''' = processResults cmds results
       return (CodeBlock attr results''')
