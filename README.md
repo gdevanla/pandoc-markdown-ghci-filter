@@ -1,3 +1,6 @@
+[![Hackage Version](https://img.shields.io/badge/hackage-0.1.0.0-blue.svg)](http://hackage.haskell.org/package/pandoc-markdown-ghci-filter)
+![GitHub](https://img.shields.io/github/license/gdevanla/pandoc-markdown-ghci-filter.svg)
+
 pandoc-markdown-ghci-filter
 ===========================
 
