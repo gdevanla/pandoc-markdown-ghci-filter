@@ -91,10 +91,9 @@ stack install pandoc-markdown-ghci-filter # if you want to across all stack envi
 test it on a test\_markdown file
 ================================
 
-pandoc -s -t json README.md | pandoc-markdown-ghci-filter-exe | pandoc
--f json -t markdown
-
-\`\`\`
+``` {.shell}
+pandoc -s -t json test.md | pandoc-markdown-ghci-filter-exe | pandoc -f json -t markdown
+```
 
 Usage Notes/Caveats
 ===================

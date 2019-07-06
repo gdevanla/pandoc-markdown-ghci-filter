@@ -76,8 +76,8 @@ stack install pandoc-markdown-ghci-filter # if you want to across all stack envi
 
 # test it on a test_markdown file
 
-pandoc -s -t json README.md | pandoc-markdown-ghci-filter-exe | pandoc -f json -t markdown
-
+``` shell
+pandoc -s -t json test.md | pandoc-markdown-ghci-filter-exe | pandoc -f json -t markdown
 ```
 
 # Usage Notes/Caveats
@@ -94,8 +94,6 @@ pandoc -s -t json README.md | pandoc-markdown-ghci-filter-exe | pandoc -f json -
 -- do not run this code through GHCi
 
 >> putStrLn "This line will not be expanded by the filter"
-This line will not be expanded by the filter
-
 ```
 
 Note, the default value is "On"
