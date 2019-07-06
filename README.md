@@ -93,13 +93,14 @@ Usage Notes/Caveats
 3.  If you want the filter to ignore a certain `code` block, you can
     turn-off the filter by setting the `code` block attribute as follows
 
-``` {.haskell code_filter="Off"}
+``` {.markdown}
+
+{.haskell code_filter="Off"}
 
 -- do not run this code through GHCi
 
 >> putStrLn "This line will not be expanded by the filter"
 This line will not be expanded by the filter
-
 ```
 
 Note, the default value is "On"
