@@ -68,8 +68,7 @@ Requirements
 
     - [Stack](https://docs.haskellstack.org/en/stable/README/)
 
-Currently, this filter can be installed from the source (it will be
-available on Hackage once the tool is stable).
+### From Source
 
 ``` {.shell}
 
@@ -79,11 +78,25 @@ cd pandoc-markdown-ghci-filter
 stack build
 
 stack setup # Note, this command copies this tool to ~/.local/bin.
-
-# test it on a test_markdown file
-
-pandoc -s -t json README.md | pandoc-markdown-ghci-filter-exe | pandoc -f json -t markdown
 ```
+
+### From Hackage
+
+``` {.shell}
+stack build pandoc-markdown-ghci-filter # executable only available to local stack environment
+
+or
+
+stack install pandoc-markdown-ghci-filter # if you want to across all stack environments
+```
+
+test it on a test\_markdown file
+================================
+
+pandoc -s -t json README.md | pandoc-markdown-ghci-filter-exe | pandoc
+-f json -t markdown
+
+\`\`\`
 
 Usage Notes/Caveats
 ===================

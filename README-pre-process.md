@@ -52,8 +52,8 @@ To read more about how `filter` work, visit the [this](https://pandoc.org/filter
 
     - [Stack](https://docs.haskellstack.org/en/stable/README/)
 
-Currently, this filter can be installed from the source (it will be available on Hackage once the tool is stable).
 
+### From Source
 ``` shell
 
 git clone https://github.com/gdevanla/pandoc-markdown-ghci-filter.git
@@ -62,6 +62,18 @@ cd pandoc-markdown-ghci-filter
 stack build
 
 stack setup # Note, this command copies this tool to ~/.local/bin.
+```
+
+### From Hackage
+
+``` shell
+stack build pandoc-markdown-ghci-filter # executable only available to local stack environment
+
+or
+
+stack install pandoc-markdown-ghci-filter # if you want to across all stack environments
+
+```
 
 # test it on a test_markdown file
 
