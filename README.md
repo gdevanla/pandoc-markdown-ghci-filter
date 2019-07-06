@@ -188,14 +188,10 @@ addOne x = x + 1
 14
 
 multBy2:: Integer -> Integer
-multBy1 x = x * 2
-
-<interactive>:40:1: error:
-    The type signature for ‘multBy2’ lacks an accompanying binding
+multBy2 x = x * 2
 
 >> (addOne 10) + (multBy2 20)
-<interactive>:53:17: error:
-    Variable not in scope: multBy2 :: Integer -> Integer
+51
 
 ```
 
