@@ -137,6 +137,8 @@ wrongFuncDefintion = x + 1
 
 ## Markdown after transformation
 
+## Example 1
+
 ``` {.haskell code-filter=On}
 import Data.Text
 
@@ -152,10 +154,14 @@ addOne x = x + 1
 >> addOne 13
 
 multBy2:: Integer -> Integer
-multBy2 x = x * 2
+multBy = x * 2
 
 >> (addOne 10) + (multBy2 20)
 ```
+
+## Example 3
+
+Any errors that occur while executing statements in the `code` block are also rendered.
 
 ``` {.haskell code-filter=On}
 
