@@ -13,8 +13,7 @@ module CodeBlockExecutor
 
 
 --import GHC.Generics
-import Text.Pandoc
-
+import Text.Pandoc.Definition
 import Language.Haskell.Ghcid
 import Control.Applicative
 import Control.Exception
