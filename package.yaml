@@ -21,13 +21,10 @@ description:         Please see the README on GitHub at <https://github.com/gdev
 
 dependencies:
 - base >= 4.7 && < 5
-- aeson
 - text
 - pandoc-types
-- pandoc
 - ghcid
 - containers
-
 
 default-extensions:
 - DeriveGeneric
