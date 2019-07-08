@@ -145,7 +145,7 @@ wrongFuncDefintion = x + 1
 
 ## Example 4
 
-Any errors that occur while executing statements in the `code` block are also rendered.
+Expand type definitions
 
 ``` {.haskell code-filter=Off}
 
@@ -200,7 +200,7 @@ wrongFuncDefintion = x + 1
 
 ## Example 4
 
-Any errors that occur while executing statements in the `code` block are also rendered.
+Expand type definitions
 
 ``` {.haskell code-filter=On}
 
