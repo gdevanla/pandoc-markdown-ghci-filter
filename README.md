@@ -3,7 +3,9 @@ pandoc-markdown-ghci-filter
 
 A `Pandoc` filter that identifies code blocks(`Haskell`) in Pandoc
 supported formats, executes the code in GHCI and embeds the results in
-the returned output by updating the AST provided by `Pandoc`.
+the returned output by updating the AST provided by `Pandoc`.Note, this
+library is tested with pandoc 2.7.3 and may not be compatible with older
+versions.
 
 Quick Overview
 ==============
@@ -175,8 +177,7 @@ wrongFuncDefintion = x + 1
 Example 4
 ---------
 
-Any errors that occur while executing statements in the `code` block are
-also rendered.
+Expand type definitions
 
 ``` {.haskell code-filter="Off"}
 
@@ -246,8 +247,7 @@ wrongFuncDefintion = x + 1
 Example 4
 ---------
 
-Any errors that occur while executing statements in the `code` block are
-also rendered.
+Expand type definitions
 
 ``` {.haskell code-filter="On"}
 
