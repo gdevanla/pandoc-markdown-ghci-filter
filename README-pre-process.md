@@ -143,6 +143,24 @@ wrongFuncDefintion = x + 1
 >> functionNotInScope 10
 ```
 
+## Example 4
+
+Any errors that occur while executing statements in the `code` block are also rendered.
+
+``` {.haskell code-filter=Off}
+
+testDefinition :: Integer -> Integer -> Integer
+testDefinition x y = x + y
+
+>>:t testDefinition
+
+>>:t testDefinition 10
+
+>>:t testDefinition 10 20
+
+```
+
+
 
 ## Markdown after transformation
 
@@ -178,6 +196,23 @@ wrongFuncDefinition:: Integer -> Integer
 wrongFuncDefintion = x + 1
 
 >> functionNotInScope 10
+```
+
+## Example 4
+
+Any errors that occur while executing statements in the `code` block are also rendered.
+
+``` {.haskell code-filter=On}
+
+testDefinition :: Integer -> Integer -> Integer
+testDefinition x y = x + y
+
+>>:t testDefinition
+
+>>:t testDefinition 10
+
+>>:t testDefinition 10 20
+
 ```
 
 

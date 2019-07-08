@@ -1,7 +1,3 @@
-[![Hackage Version](https://img.shields.io/badge/hackage-0.1.0.0-blue.svg)](http://hackage.haskell.org/package/pandoc-markdown-ghci-filter)
-[![Build Status](https://travis-ci.org/gdevanla/pandoc-markdown-ghci-filter.svg?branch=master)](https://travis-ci.org/gdevanla/pandoc-markdown-ghci-filter)
-![GitHub](https://img.shields.io/github/license/gdevanla/pandoc-markdown-ghci-filter.svg)
-
 pandoc-markdown-ghci-filter
 ===========================
 
@@ -176,6 +172,24 @@ wrongFuncDefintion = x + 1
 >> functionNotInScope 10
 ```
 
+Example 4
+---------
+
+Any errors that occur while executing statements in the `code` block are
+also rendered.
+
+``` {.haskell code-filter="Off"}
+
+testDefinition :: Integer -> Integer -> Integer
+testDefinition x y = x + y
+
+>>:t testDefinition
+
+>>:t testDefinition 10
+
+>>:t testDefinition 10 20
+```
+
 Markdown after transformation
 -----------------------------
 
@@ -226,6 +240,28 @@ wrongFuncDefintion = x + 1
 >> functionNotInScope 10
 <interactive>:29:2: error:
     Variable not in scope: functionNotInScope :: Integer -> t
+
+```
+
+Example 4
+---------
+
+Any errors that occur while executing statements in the `code` block are
+also rendered.
+
+``` {.haskell code-filter="On"}
+
+testDefinition :: Integer -> Integer -> Integer
+testDefinition x y = x + y
+
+>>:t testDefinition
+testDefinition :: Integer -> Integer -> Integer
+
+>>:t testDefinition 10
+testDefinition 10 :: Integer -> Integer
+
+>>:t testDefinition 10 20
+testDefinition 10 20 :: Integer
 
 ```
 

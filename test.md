@@ -32,7 +32,7 @@ import Data.Text
 >> putStrLn "This string should show up in the output"
 
 ```
-## Example 2
+## Example 3
 
 ``` {.haskell code-filter=On}
 addOne:: Integer -> Integer
