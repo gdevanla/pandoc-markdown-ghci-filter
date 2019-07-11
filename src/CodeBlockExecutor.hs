@@ -96,7 +96,8 @@ runCmd :: Ghci -- ^ Handle to the GHCi process through the GHCid interface
        -> IO T.Text -- ^ Result of the executed statement
 runCmd g cmd = do
   let executeStatement = exec g
-      cmd_ = T.concat [":{\n", T.replace ">>" "" cmd, "\n:}\n"]
+      cmd_ = if T.isPrefixOf (T.pack "import") cmd then T.concat ["\n", cmd, "\n"]
+             else T.concat [":{\n", T.replace ">>" "" cmd, "\n:}\n"]
   result <- executeStatement . T.unpack $ cmd_
   -- we send this PROBE here since GHCi has its own mind on how it prefixes output based on its native needs. By sending the probe we can guess what is the latest prompt and then discard it while processing thye output.
   probe <- exec g ":{\nshow (\"PANDOC_FILTER_PROBE_PROMPT_INTERNAL\"::String)\n:}\n"

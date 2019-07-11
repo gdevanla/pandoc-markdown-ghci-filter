@@ -45,3 +45,36 @@ multBy = x * 2
 
 >> (addOne 10) + (multBy2 20)
 ```
+
+
+```
+## Example 3
+
+``` {.haskell code-filter=On}
+import Data.Text as T
+import Control.Monad
+
+addOne:: Integer -> Integer
+addOne x = x + 1
+
+>> addOne 13
+
+multBy2:: Integer -> Integer
+multBy = x * 2
+
+>> (addOne 10) + (multBy2 20)
+```
+
+## Example 4
+
+``` {.haskell reset-session=True}
+addOne:: Integer -> Integer
+addOne x = x + 1
+
+>> addOne 13
+
+multBy2:: Integer -> Integer
+multBy = x * 2
+
+>> (addOne 10) + (multBy2 20)
+```
